@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { apiAccess } from '@/lib/api-auth';
+import { sendOAuthEmail } from '@/lib/oauth-mail';
 import { sendSmtpEmail } from '@/lib/smtp';
 
 export const dynamic = 'force-dynamic';
@@ -8,6 +9,7 @@ export const maxDuration = 60;
 const address = z.string().trim().email().max(254);
 const schema = z.object({
   connection: z.string().min(1),
+  connectionType: z.enum(['smtp', 'oauth']).default('smtp'),
   to: z.union([address, z.array(address).min(1).max(50)]),
   cc: z.array(address).max(50).default([]),
   bcc: z.array(address).max(50).default([]),
@@ -24,6 +26,7 @@ export async function POST(request) {
   if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
   try {
     const mail = { ...parsed.data, to: Array.isArray(parsed.data.to) ? parsed.data.to : [parsed.data.to] };
+    if (mail.connectionType === 'oauth') return NextResponse.json(await sendOAuthEmail(access.user.id, mail.connection, mail));
     return NextResponse.json(await sendSmtpEmail(access.user.id, mail.connection, mail));
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 502 });

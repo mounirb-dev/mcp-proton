@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import AccountCard from '@/components/AccountCard';
 import AddAccountDialog from '@/components/AddAccountDialog';
 import ApiKeysCard from '@/components/ApiKeysCard';
+import OAuthConnectionsCard from '@/components/OAuthConnectionsCard';
 import Brand from '@/components/Brand';
 import ComposeDialog from '@/components/ComposeDialog';
 import ConnectedApps from '@/components/ConnectedApps';
@@ -103,6 +104,7 @@ export default async function Home() {
         </TabsContent>
 
         <TabsContent value="access" className="space-y-4">
+          <OAuthConnectionsCard />
           <ApiKeysCard mcpUrl={mcpUrl} />
           <ConnectedApps />
         </TabsContent>

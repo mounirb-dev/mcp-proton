@@ -229,6 +229,26 @@ Si cambias de PostgreSQL a S3, los archivos antiguos siguen en PostgreSQL (la fi
 - Probado: autenticación y validación de las rutas contra la imagen real. **No probado** el envío ni la lectura contra una cuenta real de Proton (dependen de su interfaz web).
 ## Gateway SMTP para agentes
 
+### Conexiones OAuth
+
+El panel permite conectar Gmail y Outlook/Microsoft 365 mediante OAuth. Configura estas variables en Dokploy y registra las URLs de callback en cada consola:
+
+```text
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+MICROSOFT_CLIENT_ID=...
+MICROSOFT_CLIENT_SECRET=...
+```
+
+Callbacks:
+
+```text
+https://TU-DOMINIO/api/oauth/google/callback
+https://TU-DOMINIO/api/oauth/microsoft/callback
+```
+
+Los tokens de acceso y renovación se cifran con `SECRET_KEY`. Gmail usa Gmail API y Microsoft usa Microsoft Graph; Yahoo continúa disponible mediante SMTP con contraseña de aplicación.
+
 Además del servidor MCP, la aplicación puede actuar como una API de envío para proveedores que solo ofrecen SMTP. Las credenciales SMTP se guardan cifradas en PostgreSQL y nunca se devuelven por API.
 
 1. Crea una conexión desde la sesión de administrador:
@@ -259,10 +279,13 @@ Content-Type: application/json
 
 {
   "connection": "id-de-la-conexion",
+  "connectionType": "smtp",
   "to": ["destinatario@example.com"],
   "subject": "Mensaje del agente",
   "text": "Contenido del mensaje"
 }
 ```
+
+Para una cuenta OAuth conectada desde el panel, usa `connectionType: "oauth"` y el id que devuelve `GET /api/email/connections`.
 
 También acepta `html`, `cc`, `bcc` y `replyTo`. La API valida los destinatarios, limita el tamaño del mensaje y exige autenticación.
