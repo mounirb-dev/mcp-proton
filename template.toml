@@ -1,0 +1,24 @@
+# Proton MCP - Dokploy one-click template
+# Dokploy genera estos valores al crear el servicio y permite editarlos antes del deploy.
+
+[variables]
+main_domain = "${domain}"
+admin_email = "${email}"
+admin_password = "${password:16}"
+secret_key = "${base64:48}"
+postgres_password = "${password:32}"
+
+[config]
+env = [
+  "ADMIN_EMAIL=${admin_email}",
+  "ADMIN_PASSWORD=${admin_password}",
+  "SECRET_KEY=${secret_key}",
+  "POSTGRES_PASSWORD=${postgres_password}",
+  "PUBLIC_URL=${main_domain}"
+]
+mounts = []
+
+[[config.domains]]
+serviceName = "proton-mcp"
+port = 3000
+host = "${main_domain}"

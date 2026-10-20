@@ -56,6 +56,16 @@ intervalo (p. ej. 60) o desactívala.
 
 ## Despliegue en Dokploy
 
+### Plantilla de un clic
+
+El repositorio incluye `template.toml`, por lo que puede importarse como plantilla de Dokploy. Al crear el servicio,
+Dokploy genera automáticamente el dominio, el email del administrador, `ADMIN_PASSWORD`, `SECRET_KEY` y
+`POSTGRES_PASSWORD`. El dominio elegido se reutiliza como `PUBLIC_URL` y se configura automáticamente para
+`proton-mcp:3000`.
+
+Si se usa la plantilla oficial de Dokploy, solo hay que revisar los valores generados y pulsar **Deploy**. Si se conecta
+el repositorio manualmente como Compose, usa los pasos siguientes.
+
 1. Sube este directorio a un repo Git (GitHub/Gitea…).
 2. Dokploy → **Create Service → Compose** → tu repo, *Compose Path* `./docker-compose.yml`.
    (También vale una *Application* con build type *Dockerfile*, puerto 3000 y un volumen montado en `/data`.)
