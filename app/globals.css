@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 250 30% 98%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 250 100% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 250 100% 96%;
+    --accent-foreground: 250 80% 40%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 69% 31%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 95% 40%;
+    --warning-foreground: 0 0% 100%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 250 100% 64%;
+    --radius: 0.75rem;
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 240 10% 4%;
+    --foreground: 0 0% 96%;
+    --card: 240 10% 6.5%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 10% 6.5%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 250 100% 70%;
+    --primary-foreground: 240 10% 4%;
+    --secondary: 240 4% 14%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 4% 14%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 250 40% 18%;
+    --accent-foreground: 250 100% 85%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 60% 55%;
+    --success-foreground: 240 10% 4%;
+    --warning: 38 92% 60%;
+    --warning-foreground: 240 10% 4%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 250 100% 70%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    /* un velo de color en la esquina superior da profundidad sin añadir imágenes */
+    background-image: radial-gradient(60rem 28rem at 50% -10rem, hsl(var(--primary) / 0.1), transparent);
+    background-repeat: no-repeat;
+  }
+}

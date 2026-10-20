@@ -1,0 +1,6 @@
+# Solo para probar en local: publica el puerto. En Dokploy NO se usa (enruta Traefik por dominio).
+# Uso: docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+services:
+  proton-mcp:
+    ports:
+      - "3200:3000"
