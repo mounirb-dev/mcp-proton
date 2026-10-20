@@ -227,3 +227,42 @@ Si cambias de PostgreSQL a S3, los archivos antiguos siguen en PostgreSQL (la fi
 - **Sincronizar:** el botón de la cabecera trae de Proton los 150 correos más recientes de la carpeta elegida (solo metadatos, ~2 s). Con «Todas las cuentas» sincroniza cada una.
 - **Leer:** al abrir un correo cuyo cuerpo no está guardado aparece «Leer desde Proton», que lo descarga y guarda cifrado con su HTML, imágenes y adjuntos. «Actualizar» lo vuelve a leer.
 - Probado: autenticación y validación de las rutas contra la imagen real. **No probado** el envío ni la lectura contra una cuenta real de Proton (dependen de su interfaz web).
+## Gateway SMTP para agentes
+
+Además del servidor MCP, la aplicación puede actuar como una API de envío para proveedores que solo ofrecen SMTP. Las credenciales SMTP se guardan cifradas en PostgreSQL y nunca se devuelven por API.
+
+1. Crea una conexión desde la sesión de administrador:
+
+```http
+POST /api/smtp/connections
+Content-Type: application/json
+
+{
+  "name": "Mi SMTP",
+  "host": "smtp.example.com",
+  "port": 587,
+  "secure": false,
+  "username": "robot@example.com",
+  "password": "app-password",
+  "fromEmail": "robot@example.com",
+  "fromName": "Email Agent"
+}
+```
+
+2. Prueba la conexión con `POST /api/smtp/connections/:id/test`.
+3. Envía mensajes desde cualquier agente con una API key creada en el panel:
+
+```http
+POST /api/v1/email/send
+x-api-key: pmcp_...
+Content-Type: application/json
+
+{
+  "connection": "id-de-la-conexion",
+  "to": ["destinatario@example.com"],
+  "subject": "Mensaje del agente",
+  "text": "Contenido del mensaje"
+}
+```
+
+También acepta `html`, `cc`, `bcc` y `replyTo`. La API valida los destinatarios, limita el tamaño del mensaje y exige autenticación.
